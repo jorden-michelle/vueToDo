@@ -1,10 +1,11 @@
 <script setup>
 import { uid } from "uid";
 import { ref } from "vue";
-import ToDoCreator from "../components/ToDoCreator.vue";
+import TodoCreator from "../components/ToDoCreator.vue";
+import TodoItem from "../components/ToDoItem.vue";
 
 const todoList = ref([]);
-const createToDo = (todo) => {
+const createTodo = (todo) => {
   todoList.value.push({
     id: uid(),
     todo,
@@ -17,7 +18,16 @@ const createToDo = (todo) => {
 <template>
   <main>
     <h1>Create Todo</h1>
-    <ToDoCreator @create-todo="createToDo" />
+    <TodoCreator @create-todo="createTodo">
+      <template #button-content>Create</template>
+    </TodoCreator>
+    <ul class="todo-list" v-if="todoList.length > 0">
+      <TodoItem v-for="todo in todoList" :todo="todo" />
+    </ul>
+    <p v-else class="todos-msg">
+      <Icon icon="noto-v1:sad-but-relieved-face" />
+      <span>I know you have something to do! Write Drink Water you dehydrated heathen</span>
+    </p>
   </main>
 </template>
 
@@ -33,6 +43,22 @@ main {
   h1 {
     margin-bottom: 16px;
     text-align: center;
+  }
+
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin-top: 24px;
+    gap: 20px;
+  }
+
+  .todos-msg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
   }
 }
 </style>

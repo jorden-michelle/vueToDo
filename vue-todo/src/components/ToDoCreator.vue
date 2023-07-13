@@ -17,14 +17,16 @@ const createTodo = () => {
     return;
   }
   todo.invalid = true;
-  todo.errMsg = "I know you have something to do! Write Drink Water you dehydrated heathen";
+  todo.errMsg = "Todo value cannot be empty!";
 };
 </script>
 
 <template>
   <div class="input-wrap" :class="{ 'input-err': todo.invalid }">
     <input type="text" v-model="todo.todo" />
-    <button @click="createTodo()">Create</button>
+    <button @click="createTodo()">
+      <slot name="button-content"> Create </slot>
+    </button>
   </div>
   <p class="err-msg" v-if="todo.invalid">{{ todo.errMsg }}</p>
 </template>
